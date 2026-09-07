@@ -82,10 +82,10 @@ class DataClassMeta(type):
 
         dataclass_bases = [vars(b) for b in bases if isinstance(b, mcs)]
         for b in dataclass_bases + [dict_]:
-            all_annotations.update(b.get('__annotations__', {}))
             all_defaults.update(b.get('__defaults__', {}))
             all_slots.update(b.get('__slots__', set()))
             options.update(b.get('__dataclass__', {}))
+            all_annotations.update((b.get("__annotate_func__") or (lambda *_: {}))(1))
 
         post_init = '__post_init__' in all_attrs
 
